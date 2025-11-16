@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlassCall - Lecture System</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="landing-page" class="view">
+        <div class="main-container">
+            <h1 class="glass-title">🧊 GlassCall</h1>
+            <p>A Low-Data, Interactive Lecture Platform</p>
+            
+            <div class="glass-card entry-card">
+                <h2>What would you like to do?</h2>
+                
+                <button id="show-join-btn" class="soft-glow-btn">🌍 Join a Class</button>
+                <div id="join-section" class="hidden">
+                    <input type="text" id="room-id-input" placeholder="Enter Room ID (e.g., abc1234)">
+                    <input type="text" id="user-name-input" placeholder="Enter Your Name">
+                    <button id="join-room-btn" class="action-btn">Enter Class</button>
+                </div>
+                
+                <button id="show-invite-btn" class="soft-glow-btn">💡 Invite / Create a Class</button>
+                <div id="invite-section" class="hidden">
+                    <button id="create-room-btn" class="action-btn">Create Room</button>
+                    <p id="new-room-id" class="hidden room-info">
+                        Room ID: <span id="display-room-id"></span>
+                        <button id="copy-id-btn" class="copy-btn">Copy</button>
+                    </p>
+                    <button id="enter-host-class-btn" class="hidden soft-glow-btn">Enter Host Classroom</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="host-classroom" class="view hidden">
+        <header class="top-bar glass-card">
+            <span id="host-class-name">Class Name: WebRTC Basics</span>
+            <span id="host-class-id">ID: </span>
+            <span id="host-time-spent">Time: 00:00:00</span>
+            <span id="host-total-users">Users: 1</span>
+            <button id="calculator-toggle-btn" class="top-right-btn">🧮</button>
+        </header>
+
+        <div class="class-layout">
+            <div class="video-section">
+                <div class="host-video-container">
+                    <h3>Host Stream</h3>
+                    <video id="host-local-video" autoplay muted playsinline class="local-stream"></video>
+                </div>
+                
+                <div id="joiners-container" class="joiners-video-grid">
+                    <h3>Joiners Streams</h3>
+                    </div>
+            </div>
+
+            <div class="side-panel">
+                <div id="questions-bar" class="glass-card panel-item">
+                    <h4>❓ Active Questions</h4>
+                    <div id="active-questions-list">
+                        <p class="no-requests">No current question requests.</p>
+                    </div>
+                </div>
+
+                <div id="chat-panel" class="glass-card panel-item">
+                    <h4>💬 Class Chat</h4>
+                    <div id="chat-messages"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" placeholder="Send a message...">
+                        <button id="send-chat-btn">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="host-controls glass-card">
+            <button id="start-stream-btn" class="control-btn soft-glow-btn">✔ Start Streaming</button>
+            <button id="mute-self-btn" class="control-btn">🎤 Mute Self</button>
+            <button id="record-btn" class="control-btn">📼 Start Recording</button>
+            <button id="screen-share-btn" class="control-btn">💻 Share Screen</button>
+            <button id="done-class-btn" class="control-btn exit-btn soft-glow-btn">✔ Done / End Class</button>
+            <a id="download-lecture-link" class="hidden control-btn download-btn" download="GlassCall_Lecture.webm">Download Lecture</a>
+        </footer>
+    </div>
+    
+    <div id="joiner-classroom" class="view hidden">
+        <header class="top-bar glass-card">
+            <span id="joiner-class-name">Class Name: </span>
+            <span id="joiner-class-id">ID: </span>
+            <span id="joiner-time-spent">Time: 00:00:00</span>
+            <span id="joiner-total-users">Users: 1</span>
+            <button id="joiner-calculator-toggle-btn" class="top-right-btn">🧮</button>
+        </header>
+
+        <main class="joiner-main-view">
+            <video id="host-remote-video" autoplay playsinline class="main-remote-stream"></video>
+            <video id="joiner-local-video" autoplay muted playsinline class="local-preview"></video>
+        </main>
+        
+        <footer class="joiner-controls glass-card">
+            <button id="joiner-question-btn" class="control-btn soft-glow-btn">❓ Raise Hand</button>
+            <button id="joiner-exit-class-btn" class="control-btn exit-btn">Exit Class</button>
+            
+            <div id="joiner-chat-container" class="chat-input-area">
+                <input type="text" id="joiner-chat-input" placeholder="Chat with class...">
+                <button id="joiner-send-chat-btn">Send</button>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="calculator-window" class="glass-card slide-up-panel hidden">
+        <input type="text" id="calc-display" value="0" readonly>
+        <div class="calc-grid">
+            <button class="calc-btn" data-value="C">C</button>
+            <button class="calc-btn" data-value="/">/</button>
+            <button class="calc-btn" data-value="*">*</button>
+            <button class="calc-btn" data-value="-">-</button>
+            <button class="calc-btn" data-value="7">7</button>
+            <button class="calc-btn" data-value="8">8</button>
+            <button class="calc-btn" data-value="9">9</button>
+            <button class="calc-btn operator" data-value="+">+</button>
+            <button class="calc-btn" data-value="4">4</button>
+            <button class="calc-btn" data-value="5">5</button>
+            <button class="calc-btn" data-value="6">6</button>
+            <button class="calc-btn equals" data-value="=">=</button>
+            <button class="calc-btn" data-value="1">1</button>
+            <button class="calc-btn" data-value="2">2</button>
+            <button class="calc-btn" data-value="3">3</button>
+            <button class="calc-btn zero" data-value="0">0</button>
+            <button class="calc-btn" data-value=".">.</button>
+        </div>
+    </div>
+
+    <script src="frontend.js"></script>
+</body>
+</html>
